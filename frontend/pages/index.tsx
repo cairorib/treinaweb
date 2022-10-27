@@ -1,54 +1,62 @@
-import { Box } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, Grid, TextField } from "@mui/material";
 import { NextPage } from "next";
 import { Professor } from "../src/@types/professor";
 import Header from "../src/components/Header/Header";
 import Lista from "../src/components/Lista/Lista";
+import { useIndex } from "../src/hooks/pages/useIndex";
 
-/* 
-function Botao(props): JSX.Element{
- return  <a href="#">{props.title}</a>
-} */
+
 
 const home: NextPage =()=>{
 
-  const professores: Professor[]=[
-    {
-      id:1,
-      nome:'professor1',
-      foto:'https://img.freepik.com/vetores-premium/personagem-de-avatar-de-homens-de-professores_24911-52722.jpg',
-      descricao: 'Descricao do professor',
-      valor_hora:100
-    },
-    {
-      id:2,
-      nome:'professor2',
-      foto:'https://img.freepik.com/vetores-premium/personagem-de-avatar-de-homens-de-professores_24911-52722.jpg',
-      descricao: 'Descricao do professor',
-      valor_hora:100
-    },
-    {
-      id:3,
-      nome:'professor3',
-      foto:'https://img.freepik.com/vetores-premium/personagem-de-avatar-de-homens-de-professores_24911-52722.jpg',
-      descricao: 'Descricao do professor',
-      valor_hora:100
-    },
-    {
-      id:4,
-      nome:'professor4',
-      foto:'https://img.freepik.com/vetores-premium/personagem-de-avatar-de-homens-de-professores_24911-52722.jpg',
-      descricao: 'Descricao do professor',
-      valor_hora:100
-    }
-  ]
-
-    return (
-    <>    
+  const {listaProfessores, nome,setNome,email,setEmail, profesorSelecionado, setProfessorSelecionado} = useIndex();
+  
+  return (
+    <div>    
       <Box sx={{backgroundColor:'secondary.main'}}> 
-      <Lista professores={professores} />
+        <Lista 
+          professores={listaProfessores} 
+          onSelect = {(professor)=> setProfessorSelecionado(professor)}
+        />
       </Box>
     
-    </>
+      <Dialog 
+        open={true}
+        fullWidth
+        PaperProps={{sx:{p:5}}}
+        >
+          <Grid container spacing={1}>
+              <Grid xs={12}>
+                <TextField 
+                label='digite o nome'
+                type= 'text'
+                fullWidth
+                value={nome}
+                onChange={(e)=>setNome(e.target.value)}
+                />
+                              </Grid>
+              <Grid xs={12}>
+                <TextField 
+                label='digite o email'
+                type= 'text'
+                fullWidth
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
+                />
+                
+            </Grid>
+          <DialogActions sx={{mt:5}}>
+            <Button>
+              Cancelar
+            </Button>
+            <Button>
+              Marcar
+            </Button>
+          </DialogActions>
+
+          </Grid>
+      </Dialog>
+    </div>
 
         
     )

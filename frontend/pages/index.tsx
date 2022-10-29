@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, Grid, TextField } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, Grid, Snackbar, TextField } from "@mui/material";
 import { NextPage } from "next";
 import { Professor } from "../src/@types/professor";
 import Header from "../src/components/Header/Header";
@@ -9,7 +9,18 @@ import { useIndex } from "../src/hooks/pages/useIndex";
 
 const home: NextPage =()=>{
 
-  const {listaProfessores, nome,setNome,email,setEmail, profesorSelecionado, setProfessorSelecionado} = useIndex();
+  const {
+    listaProfessores, 
+    nome,
+    setNome,
+    email,
+    setEmail, 
+    profesorSelecionado, 
+    setProfessorSelecionado, 
+    marcarAula,
+    message,
+    setMessage
+  } = useIndex();
   
   return (
     <div>    
@@ -20,8 +31,9 @@ const home: NextPage =()=>{
         />
       </Box>
     
-      <Dialog 
-        open={true}
+      <Dialog
+        onClose={()=>setProfessorSelecionado(null)} 
+        open={profesorSelecionado !== null}
         fullWidth
         PaperProps={{sx:{p:5}}}
         >
@@ -38,7 +50,7 @@ const home: NextPage =()=>{
               <Grid xs={12}>
                 <TextField 
                 label='digite o email'
-                type= 'text'
+                type= 'email'
                 fullWidth
                 value={email}
                 onChange={(e)=>setEmail(e.target.value)}
@@ -46,16 +58,26 @@ const home: NextPage =()=>{
                 
             </Grid>
           <DialogActions sx={{mt:5}}>
-            <Button>
+            <Button
+            onClick={()=> setProfessorSelecionado(null)}
+            >
               Cancelar
             </Button>
-            <Button>
+            <Button
+            onClick={()=>marcarAula()}
+            >
               Marcar
             </Button>
           </DialogActions>
 
           </Grid>
       </Dialog>
+
+      <Snackbar message={message} open={message.length>0}
+      autoHideDuration={2500}
+      onClose={()=> setMessage('')}
+      
+      />
     </div>
 
         
